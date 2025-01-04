@@ -26,6 +26,9 @@ RUN echo "github ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 # Set working directory
 WORKDIR /home/github/actions-runner
 
+# Fix ownership of the runner directory
+RUN mkdir -p /home/github/actions-runner && chown -R github:github /home/github/actions-runner
+
 # Define build-time arguments
 ARG GH_RUNNER_VERSION=2.321.0
 ARG GH_RUNNER_HASH=62cc5735d63057d8d07441507c3d6974e90c1854bdb33e9c8b26c0da086336e1
@@ -38,6 +41,9 @@ RUN curl -o actions-runner.tar.gz -L ${GH_RUNNER_URL} \
     && echo "${GH_RUNNER_HASH}  actions-runner.tar.gz" | sha256sum -c - \
     && tar xzf actions-runner.tar.gz \
     && rm actions-runner.tar.gz
+
+# Fix ownership of the extracted files
+RUN chown -R github:github /home/github/actions-runner
 
 # Copy the entrypoint script into the container
 COPY entrypoint.sh /home/github/actions-runner/entrypoint.sh

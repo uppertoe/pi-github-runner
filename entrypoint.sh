@@ -16,12 +16,7 @@ fi
 # Configure the runner
 ./config.sh \
     --url "$GITHUB_URL" \
-    --token "$RUNNER_TOKEN" \
-    --name "$RUNNER_NAME" \
-    --labels "$RUNNER_LABELS" \
-    --work "$RUNNER_WORKDIR" \
-    --unattended \
-    --replace
+    --token "$RUNNER_TOKEN"
 
 # Trap SIGTERM and SIGINT to gracefully stop the runner
 trap './svc.sh stop; exit 0' SIGTERM SIGINT
